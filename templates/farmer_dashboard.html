@@ -1,0 +1,616 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('style') }}">
+</head>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f7f0;
+    color: #333;
+}
+
+/* Main Layout */
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+
+.sidebar {
+    width: 250px;
+    background: #123d25;
+    color: white;
+    padding: 25px 18px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.sidebar h2 {
+    color: #a8e063;
+    font-size: 22px;
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar nav a,
+.logout {
+    text-decoration: none;
+    color: #d5e5d8;
+    padding: 13px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+    background: #287a40;
+    color: white;
+}
+
+.logout {
+    margin-top: auto;
+    background: #a83232;
+    text-align: center;
+}
+
+.logout:hover {
+    background: #852525;
+    color: white;
+}
+
+/* Main Content */
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 30px;
+}
+
+/* Welcome Section */
+
+.welcome-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.welcome-section h1 {
+    color: #176b35;
+    margin-bottom: 10px;
+    font-size: 26px;
+}
+
+.welcome-section p {
+    color: #777;
+    font-size: 14px;
+}
+
+.farmer-info {
+    background: #eaf5e9;
+    color: #176b35;
+    padding: 12px 16px;
+    border-radius: 7px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Summary Cards */
+
+.summary-section {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background: white;
+    padding: 22px;
+    border-radius: 10px;
+    border-left: 5px solid #228B22;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.summary-card h3 {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.summary-card h2 {
+    color: #176b35;
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.summary-card p {
+    color: #999;
+    font-size: 12px;
+}
+
+/* Quick Actions */
+
+.quick-section,
+.procurement-section,
+.notification-section {
+    margin-bottom: 30px;
+}
+
+.quick-section h2 {
+    color: #176b35;
+    font-size: 21px;
+    margin-bottom: 18px;
+}
+
+.section-heading h2 {
+    color: white;
+    font-size: 21px;
+    margin-bottom: 18px;
+}
+
+.quick-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.quick-card {
+    background: white;
+    padding: 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    border: 1px solid #e2eee2;
+    transition: 0.3s;
+}
+
+.quick-card h3 {
+    color: #176b35;
+    font-size: 17px;
+    margin-bottom: 12px;
+}
+
+.quick-card p {
+    color: #777;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.quick-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border-color: #228B22;
+}
+
+/* Section Headings */
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-heading a {
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.section-heading a:hover {
+    color: white;
+}
+
+/* Procurement Table */
+
+.table-container {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    overflow-x: auto;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+th,
+td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+th {
+    background: #eaf5e9;
+    color: #176b35;
+}
+
+td {
+    color: #555;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status Labels */
+
+.status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status.requested {
+    background: #fff7d6;
+    color: #8a6500;
+}
+
+.status.scheduled, .status.pending {
+    background: #fff2cc;
+    color: #936500;
+}
+
+.status.delayed, .status.approved {
+    background: #d9f2df;
+    color: #176b35;
+}
+
+.status.completed {
+    background: #dceaff;
+    color: #245a9b;
+}
+
+.status.rejected {
+    background: #ffe0e0;
+    color: #b52b2b;
+}
+
+/* Notifications */
+
+.notification-card {
+    background: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.notification-item {
+    padding: 15px 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item p {
+    color: #444;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.notification-item small {
+    color: #999;
+    font-size: 12px;
+}
+
+/* Footer */
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+
+@media (max-width: 1000px) {
+
+    .summary-section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .quick-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .sidebar nav {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .logout {
+        margin-top: 20px;
+    }
+
+    .main-content {
+        padding: 18px;
+    }
+
+    .welcome-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .summary-section,
+    .quick-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
+<body>
+
+    <div class="dashboard-container">
+
+        
+        <aside class="sidebar">
+
+            <h2>Farmer E-Connect</h2>
+
+            <nav>
+                <a href="/farmer_dashboard" class="active">Dashboard</a>
+            <a href="#profile">My Profile</a>
+                <a href="#profile">My Crops</a>
+                <a href="/apply_procurement">Apply for Procurement</a>
+                <a href="#procurement">My Procurement</a>
+                <a href="/msp_rates">MSP Rates</a>
+                <a href="#notifications">Notifications</a>
+                <a href="/help">Help & Support</a>
+            </nav>
+
+            <a href="/logout" class="logout">Logout</a>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Welcome Section -->
+            <header class="welcome-section">
+
+                <div>
+                    <h1>Welcome, {{ farmer_name }}!</h1>
+                    <p>Manage your crops and procurement activities here.</p>
+                </div>
+
+                <div class="farmer-info">
+                    Farmer ID: {{ farmer_id }}
+                </div>
+
+            </header>
+
+
+            <!-- Dashboard Summary -->
+            <section class="summary-section">
+
+                <div class="summary-card">
+                    <h3>Total Requests</h3>
+                    <h2 id="total-requests">0</h2>
+                    <p>All procurement requests</p>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Requested</h3>
+                    <h2 id="requested-requests">0</h2>
+                    <p>Waiting for admin schedule</p>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Scheduled Requests</h3>
+                    <h2 id="scheduled-requests">0</h2>
+                    <p>Waiting for procurement</p>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Delayed Requests</h3>
+                    <h2 id="delayed-requests">0</h2>
+                    <p>Schedule has been delayed</p>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Completed Requests</h3>
+                    <h2 id="completed-requests">0</h2>
+                    <p>Successfully completed</p>
+                </div>
+
+            </section>
+
+
+            <!-- Quick Actions -->
+            <section class="quick-section" id="profile">
+
+                <h2>Quick Actions</h2>
+
+                <div class="quick-cards">
+
+                    <a href="/apply_procurement" class="quick-card">
+                        <h3>Apply for Procurement</h3>
+                        <p>Submit a new crop procurement request.</p>
+                    </a>
+
+                    <a href="/my_procurement" class="quick-card">
+                        <h3>Track Requests</h3>
+                        <p>Check the status of your crop requests.</p>
+                    </a>
+
+                    <a href="/msp_rates" class="quick-card">
+                        <h3>Check MSP Rates</h3>
+                        <p>View the latest minimum support prices.</p>
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- Recent Procurement -->
+            <section class="procurement-section" id="procurement">
+
+                <div class="section-heading">
+                    <h2>Recent Procurement</h2>
+                    <a href="/my_procurement">View All</a>
+                </div>
+
+                <div class="table-container">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Token Number</th>
+                                <th>Crop</th>
+                                <th>Requested / Scheduled Date</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recent-requests"></tbody>
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- Notifications -->
+            <section class="notification-section" id="notifications">
+
+                <div class="section-heading">
+                    <h2>Recent Notifications</h2>
+                    <a href="/notifications">View All</a>
+                </div>
+
+                <div class="notification-card" id="recent-notifications"></div>
+
+            </section>
+
+
+            <!-- Footer -->
+            <footer>
+                <p>© 2026 Farmer E-Connect. All Rights Reserved.</p>
+            </footer>
+
+        </main>
+
+    </div>
+
+<script>
+    // Put the data sent by Flask into the dashboard using the DOM.
+    const dashboardData = {{ dashboard_data|tojson }};
+
+    document.getElementById("total-requests").textContent = dashboardData.total_requests;
+    document.getElementById("requested-requests").textContent = dashboardData.requested_requests;
+    document.getElementById("scheduled-requests").textContent = dashboardData.scheduled_requests;
+    document.getElementById("delayed-requests").textContent = dashboardData.delayed_requests;
+    document.getElementById("completed-requests").textContent = dashboardData.completed_requests;
+
+    const requestTable = document.getElementById("recent-requests");
+    if (dashboardData.recent_requests.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 6;
+        cell.textContent = "No procurement requests found.";
+        row.appendChild(cell);
+        requestTable.appendChild(row);
+    } else {
+        for (const item of dashboardData.recent_requests) {
+            const row = document.createElement("tr");
+            const idCell = document.createElement("td");
+            const tokenCell = document.createElement("td");
+            const cropCell = document.createElement("td");
+            const dateCell = document.createElement("td");
+            const quantityCell = document.createElement("td");
+            const statusCell = document.createElement("td");
+            const statusLabel = document.createElement("span");
+
+            idCell.textContent = item.id;
+            tokenCell.textContent = item.token_number;
+            cropCell.textContent = item.crop;
+            dateCell.textContent = item.procurement_date;
+            quantityCell.textContent = item.quantity + " Quintals";
+            statusLabel.className = "status " + item.status.toLowerCase();
+            statusLabel.textContent = item.status;
+            statusCell.appendChild(statusLabel);
+
+            row.appendChild(idCell);
+            row.appendChild(tokenCell);
+            row.appendChild(cropCell);
+            row.appendChild(dateCell);
+            row.appendChild(quantityCell);
+            row.appendChild(statusCell);
+            requestTable.appendChild(row);
+        }
+    }
+
+    const notificationList = document.getElementById("recent-notifications");
+    if (dashboardData.recent_notifications.length === 0) {
+        notificationList.textContent = "No new notifications.";
+    } else {
+        for (const item of dashboardData.recent_notifications) {
+            const notificationItem = document.createElement("div");
+            const message = document.createElement("p");
+            const sentDate = document.createElement("small");
+            message.textContent = item.message;
+            sentDate.textContent = item.sent_date;
+            notificationItem.appendChild(message);
+            notificationItem.appendChild(sentDate);
+            notificationList.appendChild(notificationItem);
+        }
+    }
+</script>
+</body>
+</html>

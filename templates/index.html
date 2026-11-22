@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer E Connect</title>
+    <link rel="stylesheet" href="{{ url_for('style') }}">
+</head>
+
+<body>
+
+    <section class="nav">
+        <nav class="navigation-bar">
+
+            <div class="logo">
+                Farmer E Connect
+            </div>
+
+            <ul>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+                <li><a href="{{ url_for('admin_login') }}">Admin</a></li>
+                <li><a href="#schemes">Schemes</a></li>
+                <li><a href="#rates">MSP rates</a></li>
+                <li><a href="{{ url_for('help_page') }}">Get Help</a></li>
+            </ul>
+
+        </nav>
+    </section>
+
+    <section class="hero">
+        <p><b>Your Crops, Your Rights, Your Fair Price</b>
+            <br>
+
+            Connect directly with procurement services, discover MSP-related information and track your crop procurement
+            journey.
+        </p>
+
+    </section>
+
+    <section class="schemes-section" id="schemes">
+
+        <div class="section-heading">
+            <h2>Latest Government Schemes</h2>
+            <p>Explore government initiatives and benefits available for farmers.</p>
+        </div>
+
+        <div class="schemes-container">
+
+            <div class="scheme-card">
+                <h3>PM-KISAN</h3>
+                <p>Financial assistance to eligible farmer families through direct benefit transfer.</p>
+                <button><a href="https://pmkisan.gov.in/">Know more</a> </button>
+            </div>
+
+            <div class="scheme-card">
+                <h3>Pradhan Mantri Fasal Bima Yojana</h3>
+                <p>Crop insurance protection against specified natural risks and crop losses.</p>
+                <button><a href="https://pmfby.gov.in/">Know more</a></button>
+            </div>
+
+            <div class="scheme-card">
+                <h3>Kisan Credit Card</h3>
+                <p>Provides eligible farmers access to credit for agricultural and related needs.</p>
+                <button><a href="https://www.myscheme.gov.in/schemes/kcc">Know more</a></button>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="prices-section">
+
+        <div class="section-heading">
+            <h2>Latest Procurement Prices</h2>
+            <p>Check the Minimum Support Price (MSP) of major crops. Updated rates are labelled with their marketing year.</p>
+        </div>
+
+        <div class="prices-container" id="rates">
+
+            <table class="prices-table">
+
+                <thead>
+                    <tr>
+                        <th>Crop</th>
+                        <th>Season</th>
+                        <th>MSP (₹/Quintal)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Wheat</td>
+                        <td>Rabi</td>
+                        <td>₹2,610 (Rabi 2027–28)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Paddy (Common)</td>
+                        <td>Kharif</td>
+                        <td>₹2,441 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Mustard</td>
+                        <td>Rabi</td>
+                        <td>₹6,613 (Rabi 2027–28)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Gram</td>
+                        <td>Rabi</td>
+                        <td>₹5,958 (Rabi 2027–28)</td>
+                    </tr>
+                   
+
+                    <tr>
+                        <td>Paddy (Grade A)</td>
+                        <td>Kharif</td>
+                        <td>₹2,461 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Jowar (Hybrid)</td>
+                        <td>Kharif</td>
+                        <td>₹3,699 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Jowar (Maldandi)</td>
+                        <td>Kharif</td>
+                        <td>₹3,749 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Bajra</td>
+                        <td>Kharif</td>
+                        <td>₹2,775 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Ragi</td>
+                        <td>Kharif</td>
+                        <td>₹4,886 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Maize</td>
+                        <td>Kharif</td>
+                        <td>₹2,400 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Tur (Arhar)</td>
+                        <td>Kharif</td>
+                        <td>₹8,000 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Moong</td>
+                        <td>Kharif</td>
+                        <td>₹8,768 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Urad</td>
+                        <td>Kharif</td>
+                        <td>₹7,800 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Groundnut</td>
+                        <td>Kharif</td>
+                        <td>₹7,771 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Sunflower Seed</td>
+                        <td>Kharif</td>
+                        <td>₹7,818 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Soybean (Yellow)</td>
+                        <td>Kharif</td>
+                        <td>₹5,328 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Sesamum</td>
+                        <td>Kharif</td>
+                        <td>₹9,537 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Nigerseed</td>
+                        <td>Kharif</td>
+                        <td>₹9,537 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Cotton (Medium Staple)</td>
+                        <td>Kharif</td>
+                        <td>₹7,771 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Cotton (Long Staple)</td>
+                        <td>Kharif</td>
+                        <td>₹8,021 (Kharif 2026–27)</td>
+                    </tr>
+
+                    <tr>
+                        <td>Barley</td>
+                        <td>Rabi</td>
+                        <td>2150</td>
+                    </tr>
+
+                    <tr>
+                        <td>Lentil (Masur)</td>
+                        <td>Rabi</td>
+                        <td>7000</td>
+                    </tr>
+
+                    <tr>
+                        <td>Safflower</td>
+                        <td>Rabi</td>
+                        <td>6540</td>
+                    </tr>
+
+                    <tr>
+                        <td>Raw Jute</td>
+                        <td>Commercial</td>
+                        <td>5925</td>
+                    </tr>
+
+                    <tr>
+                        <td>Copra (Milling)</td>
+                        <td>Commercial</td>
+                        <td>12027</td>
+                    </tr>
+
+                    <tr>
+                        <td>Copra (Ball)</td>
+                        <td>Commercial</td>
+                        <td>12500</td>
+                    </tr>
+
+                    <tr>
+                        <td>Sugarcane</td>
+                        <td>Commercial</td>
+                        <td>365 (FRP)</td>
+                    </tr>
+
+                    
+
+                    <tr>
+                        <td>Potato</td>
+                        <td>Rabi</td>
+                        <td>No Central MSP</td>
+                    </tr>
+
+                    <tr>
+                        <td>Onion</td>
+                        <td>Rabi</td>
+                        <td>No Central MSP</td>
+                    </tr>
+
+                    <tr>
+                        <td>Tomato</td>
+                        <td>All Seasons</td>
+                        <td>No Central MSP</td>
+                    </tr>
+
+                    <tr>
+                        <td>Garlic</td>
+                        <td>Rabi</td>
+                        <td>No Central MSP</td>
+                    </tr>
+
+                    <tr>
+                        <td>Green Chilli</td>
+                        <td>Kharif</td>
+                        <td>No Central MSP</td>
+                    </tr>
+
+                    <tr>
+                        <td>Turmeric</td>
+                        <td>Commercial</td>
+                        <td>No Central MSP</td>
+                    </tr>
+
+                    <tr>
+                        <td>Coriander</td>
+                        <td>Rabi</td>
+                        <td>No Central MSP</td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+            <p class="price-note">
+                Note: MSP rates are subject to government announcements.
+                Please verify the latest official rates before procurement.
+            </p>
+
+        </div>
+
+    </section>
+    
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-about">
+            <h2>Farmer E Connect</h2>
+            <p>
+                Making crop procurement easier, transparent
+                and accessible for every farmer.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <a href="{{ url_for('first_page') }}">Home</a>
+            <a href="#">MSP Rates</a>
+            <a href="#">Government Schemes</a>
+            <a href="#">Contact Us</a>
+        </div>
+
+        <div class="footer-contact">
+            <h3>Contact</h3>
+            <p>Email: support@farmerconnect.in</p>
+            <p>Farmer Support Portal</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Farmer Connect. All Rights Reserved.</p>
+    </div>
+
+</footer>
+
+
+    </section>
+
+</body>
+
+</html>

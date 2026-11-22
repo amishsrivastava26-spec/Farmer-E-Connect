@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Farmer Procurement</title>
+
+    <link rel="stylesheet" href="{{ url_for('style') }}">
+</head>
+
+<style>
+    /* General Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7f3;
+        color: #26352b;
+    }
+
+    /* Main Layout */
+    .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 250px;
+        background: linear-gradient(180deg, #14532d, #166534);
+        color: white;
+        padding: 30px 20px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .logo {
+        margin-bottom: 45px;
+    }
+
+    .logo h2 {
+        font-size: 27px;
+        margin-bottom: 7px;
+    }
+
+    .logo span {
+        color: #a3e635;
+    }
+
+    .logo p {
+        font-size: 12px;
+        color: #d1fae5;
+    }
+
+    .sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .nav-link {
+        text-decoration: none;
+        color: #e5f5e9;
+        padding: 13px 15px;
+        border-radius: 7px;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        background-color: #ffffff;
+        color: #166534;
+    }
+
+    .sidebar-bottom {
+        margin-top: 40px;
+    }
+
+    .logout-btn {
+        display: block;
+        text-decoration: none;
+        text-align: center;
+        background-color: #dcfce7;
+        color: #14532d;
+        padding: 12px;
+        border-radius: 7px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+        background-color: #bbf7d0;
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        padding: 30px 40px;
+        min-width: 0;
+    }
+
+    /* Header */
+    .top-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 35px;
+    }
+
+    .top-header h1 {
+        font-size: 28px;
+        margin-bottom: 7px;
+    }
+
+    .top-header p {
+        color: #718078;
+        font-size: 14px;
+    }
+
+    .admin-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .profile-icon {
+        width: 42px;
+        height: 42px;
+        background-color: #dcfce7;
+        color: #166534;
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .admin-profile h4 {
+        font-size: 14px;
+    }
+
+    .admin-profile p {
+        font-size: 12px;
+        margin-top: 4px;
+    }
+
+    /* Welcome Section */
+    .welcome-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        background: linear-gradient(100deg, #14532d, #22a05b);
+        color: white;
+
+        padding: 27px 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+    }
+
+    .welcome-section h2 {
+        font-size: 23px;
+        margin-bottom: 8px;
+    }
+
+    .welcome-section p {
+        font-size: 14px;
+        color: #dcfce7;
+    }
+
+    .primary-btn {
+        text-decoration: none;
+        background-color: white;
+        color: #166534;
+        padding: 12px 18px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .primary-btn:hover {
+        background-color: #dcfce7;
+    }
+
+    /* Statistics */
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 17px;
+        margin-bottom: 35px;
+    }
+
+    .stat-card {
+        background-color: white;
+        padding: 22px 18px;
+        border-radius: 10px;
+        border-left: 4px solid #16a34a;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .stat-card p {
+        font-size: 13px;
+        color: #718078;
+        margin-bottom: 12px;
+    }
+
+    .stat-card h2 {
+        font-size: 29px;
+        margin-bottom: 8px;
+        color: #14532d;
+    }
+
+    .stat-card span {
+        font-size: 11px;
+        color: #89958d;
+    }
+
+    .stat-card.completed {
+        border-left-color: #16a34a;
+    }
+
+    .stat-card.scheduled {
+        border-left-color: #eab308;
+    }
+
+    .stat-card.delayed {
+        border-left-color: #dc2626;
+    }
+
+    .stat-card.cancelled {
+        border-left-color: #6b7280;
+    }
+
+    .stat-card.scheduled h2 {
+        color: #ca8a04;
+    }
+
+    .stat-card.delayed h2 {
+        color: #dc2626;
+    }
+
+    /* Section Headings */
+    .quick-actions,
+    .recent-records {
+        margin-bottom: 35px;
+    }
+
+    .quick-actions h2,
+    .recent-records h2 {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .action-container {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 17px;
+    }
+
+    /* Action Cards */
+    .action-card {
+        background-color: white;
+        padding: 22px 18px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: #26352b;
+        border: 1px solid #e5eee6;
+        transition: 0.3s;
+    }
+
+    .action-card:hover {
+        transform: translateY(-4px);
+        border-color: #16a34a;
+        box-shadow: 0 5px 15px rgba(22, 101, 52, 0.09);
+    }
+
+    .action-card h3 {
+        font-size: 15px;
+        color: #166534;
+        margin-bottom: 10px;
+    }
+
+    .action-card p {
+        font-size: 12px;
+        line-height: 1.6;
+        color: #718078;
+    }
+
+    /* Recent Records */
+    .section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+        margin-bottom: 6px;
+    }
+
+    .section-heading p {
+        font-size: 13px;
+        color: #718078;
+    }
+
+    .section-heading a {
+        color: #15803d;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .table-container {
+        background-color: white;
+        border-radius: 10px;
+        padding: 15px;
+        overflow-x: auto;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 650px;
+    }
+
+    th {
+        background-color: #f0f7f1;
+        color: #166534;
+        text-align: left;
+        padding: 15px;
+        font-size: 13px;
+    }
+
+    td {
+        padding: 15px;
+        border-bottom: 1px solid #edf1ed;
+        font-size: 13px;
+        color: #526158;
+    }
+
+    tbody tr:hover {
+        background-color: #f8fbf8;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    .status.completed {
+        background-color: #dcfce7;
+        color: #166534;
+    }
+
+    .status.scheduled {
+        background-color: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .status.delayed {
+        background-color: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .status.cancelled {
+        background-color: #f1f5f9;
+        color: #475569;
+    }
+
+    .no-records {
+        text-align: center;
+        padding: 30px;
+        color: #89958d;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1100px) {
+
+        .stats-container {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .action-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 750px) {
+
+        .dashboard-container {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-nav {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .main-content {
+            padding: 22px 16px;
+        }
+
+        .top-header {
+            align-items: flex-start;
+            gap: 20px;
+            flex-direction: column;
+        }
+
+        .welcome-section {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stats-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 450px) {
+
+        .stats-container,
+        .action-container {
+            grid-template-columns: 1fr;
+        }
+
+        .sidebar-nav {
+            grid-template-columns: 1fr;
+        }
+
+        .top-header h1 {
+            font-size: 23px;
+        }
+    }
+</style>
+
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="logo">
+                <h2>Farmer <span>EConnect</span></h2>
+                <p>Smart Procurement Management</p>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="{{ url_for('admin_dashboard') }}" class="nav-link active">
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('view_farmers') }}" class="nav-link">
+                    Manage Farmers
+                </a>
+
+                <a href="{{ url_for('add_farmer') }}" class="nav-link">
+                    Add Farmer
+                </a>
+
+                <a href="{{ url_for('view_procurements') }}" class="nav-link">
+                    Review Requests
+                </a>
+
+                <a href="{{ url_for('view_procurements') }}" class="nav-link">
+                    Procurement Records
+                </a>
+
+                <a href="/admin_helpdesk" class="nav-link">
+                    Helpdesk
+                </a>
+
+                <a href="{{ url_for('admin_notifications') }}" class="nav-link">
+                    Notifications
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+                <a href="{{ url_for('admin_logout') }}" class="logout-btn">
+                    Logout
+                </a>
+            </div>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Top Header -->
+            <header class="top-header">
+
+                <div>
+                    <h1>Admin Dashboard</h1>
+                    <p>Manage farmers and crop procurement activities.</p>
+                </div>
+
+                <div class="admin-profile">
+                    <div class="profile-icon">A</div>
+                    <div>
+                        <h4>Administrator</h4>
+                        <p>Procurement Centre</p>
+                    </div>
+                </div>
+
+            </header>
+
+
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+
+                <div>
+                    <h2>Welcome, Admin!</h2>
+                    <p>Here's an overview of your procurement centre.</p>
+                </div>
+
+                <a href="{{ url_for('view_procurements') }}" class="primary-btn">
+                    Review Farmer Requests
+                </a>
+
+            </section>
+
+
+            <!-- Statistics Cards -->
+            <section class="stats-container">
+
+                <div class="stat-card">
+                    <p>Requests Waiting</p>
+                    <h2>{{ requested_count }}</h2>
+                    <span>Farmers waiting for a schedule</span>
+                </div>
+
+                <div class="stat-card">
+                    <p>Help Requests</p>
+                    <h2>{{ help_request_count }}</h2>
+                    <span>Farmer support requests</span>
+                </div>
+
+                <div class="stat-card">
+                    <p>Total Farmers</p>
+                    <h2>{{ total_farmers }}</h2>
+                    <span>Registered farmers</span>
+                </div>
+
+                <div class="stat-card">
+                    <p>Total Procurement</p>
+                    <h2>{{ total_procurement }}</h2>
+                    <span>All procurement records</span>
+                </div>
+
+                <div class="stat-card completed">
+                    <p>Completed</p>
+                    <h2>{{ completed_count }}</h2>
+                    <span>Successfully completed</span>
+                </div>
+
+                <div class="stat-card scheduled">
+                    <p>Scheduled</p>
+                    <h2>{{ scheduled_count }}</h2>
+                    <span>Awaiting procurement</span>
+                </div>
+
+                <div class="stat-card delayed">
+                    <p>Delayed</p>
+                    <h2>{{ delayed_count }}</h2>
+                    <span>Delayed procurement</span>
+                </div>
+
+                <div class="stat-card cancelled">
+                    <p>Cancelled</p>
+                    <h2>{{ cancelled_count }}</h2>
+                    <span>Cancelled procurement</span>
+                </div>
+
+            </section>
+
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+
+                <h2>Quick Actions</h2>
+
+                <div class="action-container">
+
+                    <a href="{{ url_for('add_farmer') }}" class="action-card">
+                        <h3>+ Add Farmer</h3>
+                        <p>Register a new farmer in the system.</p>
+                    </a>
+
+                    <a href="{{ url_for('view_procurements') }}" class="action-card">
+                        <h3>Review Farmer Requests</h3>
+                        <p>Assign tokens, confirm dates and update status.</p>
+                    </a>
+
+                    <a href="{{ url_for('view_farmers') }}" class="action-card">
+                        <h3>View Farmers</h3>
+                        <p>View and manage registered farmers.</p>
+                    </a>
+
+                    <a href="/admin_helpdesk" class="action-card">
+                        <h3>Review Helpdesk</h3>
+                        <p>Read help requests and contact farmers.</p>
+                    </a>
+
+                    <a href="{{ url_for('view_procurements') }}" class="action-card">
+                        <h3>View Records</h3>
+                        <p>Check and update procurement records.</p>
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- Recent Procurement Records -->
+            <section class="recent-records" id="recent-records-section">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Recent Procurement Records</h2>
+                        <p>Latest procurement activities</p>
+                    </div>
+
+                    <a href="{{ url_for('view_procurements') }}">View All</a>
+                </div>
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Token No.</th>
+                                <th>Farmer ID</th>
+                                <th>Crop</th>
+                                <th>Date</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recent-records"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+<script>
+    // Add the recent procurement records to the table using the DOM.
+    const dashboardData = {{ dashboard_data|tojson }};
+    const recordTable = document.getElementById("recent-records");
+
+    if (dashboardData.recent_records.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 6;
+        cell.className = "no-records";
+        cell.textContent = "No procurement records available.";
+        row.appendChild(cell);
+        recordTable.appendChild(row);
+    } else {
+        for (const item of dashboardData.recent_records) {
+            const row = document.createElement("tr");
+            const values = [item.token_number, item.farmer_id, item.crop,
+                item.procurement_date, item.quantity];
+
+            for (const value of values) {
+                const cell = document.createElement("td");
+                cell.textContent = value;
+                row.appendChild(cell);
+            }
+
+            const statusCell = document.createElement("td");
+            const statusLabel = document.createElement("span");
+            statusLabel.className = "status " + item.status.toLowerCase();
+            statusLabel.textContent = item.status;
+            statusCell.appendChild(statusLabel);
+            row.appendChild(statusCell);
+            recordTable.appendChild(row);
+        }
+    }
+</script>
+</body>
+
+</html>

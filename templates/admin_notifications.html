@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Notifications</title>
+    <link rel="stylesheet" href="{{ url_for('style') }}">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 24px; background: #f3f8ef; }
+        main { max-width: 900px; margin: auto; background: white; padding: 24px; border-radius: 10px; }
+        form { display: flex; flex-direction: column; gap: 12px; max-width: 500px; }
+        input, select, textarea, button { padding: 10px; }
+        button { background: #228b22; color: white; border: 0; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 9px; border: 1px solid #ccc; text-align: left; }
+        th { background: #228b22; color: white; }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Send a Procurement Notification</h1>
+        <p><a href="{{ url_for('admin_dashboard') }}">Back to dashboard</a></p>
+        {% if message %}<p>{{ message }}</p>{% endif %}
+        <form action="{{ url_for('admin_notifications') }}" method="post">
+            <label for="farmer_id">Recipient</label>
+            <select id="farmer_id" name="farmer_id" required>
+                <option value="">Choose a farmer</option>
+                <option value="all">All farmers</option>
+                {% for farmer in farmers %}
+                <option value="{{ farmer[0] }}">{{ farmer[1] }} (ID {{ farmer[0] }})</option>
+                {% endfor %}
+            </select>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+            <button type="submit">Save and show notification</button>
+        </form>
+
+        <h2>Saved Notifications</h2>
+        <table>
+            <thead><tr><th>Farmer</th><th>Message</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody>
+                {% for item in notifications %}
+                <tr><td>{{ item[2] }} ({{ item[1] }})</td><td>{{ item[3] }}</td><td>{{ item[4] }}</td><td>{{ item[5] }}</td></tr>
+                {% else %}
+                <tr><td colspan="4">No notifications have been saved.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

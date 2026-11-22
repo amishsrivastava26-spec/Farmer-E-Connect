@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer E Connect Help</title>
+</head>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eaf5e9;
+    font-family: Arial, sans-serif;
+}
+
+.help {
+    width: 450px;
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+.help form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.help h2 {
+    text-align: center;
+    color: #006400;
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+.help input,
+.help select,
+.help textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    outline: none;
+}
+
+.help input:focus,
+.help select:focus,
+.help textarea:focus {
+    border-color: #228B22;
+    box-shadow: 0 0 5px rgba(34, 139, 34, 0.2);
+}
+
+.help label {
+    color: #245c32;
+    font-weight: bold;
+    margin-bottom: -10px;
+}
+
+.help select {
+    background: white;
+    cursor: pointer;
+    color: #444;
+}
+
+.help textarea {
+    height: 130px;
+    resize: vertical;
+}
+
+.help button {
+    padding: 13px;
+    background: linear-gradient(90deg, #006400, #228B22);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.help button:hover {
+    background: #004d00;
+}
+
+</style>
+<body>
+
+    <section class="help">
+
+        <form action="/help" method="POST">
+            {% if message %}<p>{{ message }}</p>{% endif %}
+
+            <h2>How can we Help?</h2>
+
+            <input type="text" name="farmer_name" placeholder="Enter Name" required>
+
+            <input type="text" name="farmer_id" placeholder="Enter your ID" required>
+
+            <label for="help">What type of Help do you want?</label>
+
+            <select name="help_type" id="help" required>
+                <option value="" disabled selected>Select Help Category</option>
+                <option value="login">Login Related Issue</option>
+                <option value="register">Registration Related Issue</option>
+                <option value="procurement">Procurement Related Issue</option>
+                <option value="msp">MSP Related Issue</option>
+                <option value="other">Other Issue</option>
+            </select>
+
+            <textarea name="issue" placeholder="Describe your issue..." required></textarea>
+
+            <button type="submit">Submit</button>
+
+            <a href="/farmer_dashboard" style="text-align: center; color: #176b35;">Back to farmer dashboard</a>
+
+        </form>
+
+    </section>
+
+</body>
+</html>

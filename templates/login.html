@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer E Connect Login</title>
+</head>
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eaf5e9;
+    font-family: Arial, sans-serif;
+}
+
+.login {
+    width: 380px;
+    background-color: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+.login form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login h2 {
+    text-align: center;
+    color: #006400;
+    margin-bottom: 10px;
+    font-size: 26px;
+}
+
+.login input {
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+}
+
+.login input:focus {
+    border-color: #228B22;
+}
+
+.login button {
+    padding: 13px;
+    background: linear-gradient(90deg, #006400, #228B22);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login button:hover {
+    background: #004d00;
+}
+
+</style>
+
+<body>
+    <section class="login">
+        <form action="/login" method="POST">
+            <h2> Farmer Login </h2>
+            {% if message %}<p>{{ message }}</p>{% endif %}
+            <input type="text" name="name" placeholder="Name (username)" required>
+            <input type="tel" name="mobile" placeholder="Mobile number" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button>Log In</button>
+            <p><a href="{{ url_for('activate_farmer') }}">Set a password for an existing account</a></p>
+        </form>
+
+    </section>
+</body>
+
+</html>

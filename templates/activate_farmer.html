@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Farmer Password</title>
+</head>
+<style>
+    body { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: #eaf5e9; font-family: Arial, sans-serif; }
+    main { width: 380px; background: white; padding: 30px; border-radius: 12px; }
+    form { display: flex; flex-direction: column; gap: 14px; }
+    input, button { padding: 12px; }
+    button { background: #228b22; color: white; border: 0; cursor: pointer; }
+</style>
+<body>
+    <main>
+        <h2>Set Password</h2>
+        <p>For an existing farmer record that does not have a password yet.</p>
+        {% if message %}<p>{{ message }}</p>{% endif %}
+        <form action="{{ url_for('activate_farmer') }}" method="post">
+            <input type="text" name="name" placeholder="Name (username)" required>
+            <input type="tel" name="mobile" placeholder="Mobile number" required>
+            <input type="password" name="password" placeholder="Create password" required>
+            <button type="submit">Set password</button>
+        </form>
+        <p><a href="{{ url_for('login') }}">Back to login</a></p>
+    </main>
+</body>
+</html>

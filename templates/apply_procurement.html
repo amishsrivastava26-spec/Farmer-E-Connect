@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Procurement</title>
+    <link rel="stylesheet" href="{{ url_for('style') }}">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            font-family: Arial, sans-serif;
+            color: #26352b;
+            background: linear-gradient(135deg, #edf7ed, #f8fbf6);
+        }
+        main {
+            width: 100%;
+            max-width: 540px;
+            padding: 36px;
+            background: white;
+            border: 1px solid #e1ece1;
+            border-radius: 16px;
+            box-shadow: 0 16px 40px rgba(25, 75, 40, 0.10);
+        }
+        .top-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .back-link {
+            color: #267342;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .step-label {
+            color: #267342;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        h1 {
+            margin: 0 0 10px;
+            color: #174c2b;
+            font-size: 30px;
+        }
+        .intro {
+            margin: 0 0 24px;
+            color: #69776c;
+            line-height: 1.6;
+        }
+        .crop-box, .schedule-note {
+            padding: 15px 17px;
+            border-radius: 10px;
+        }
+        .crop-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            background: #f1f8f0;
+        }
+        .crop-label { color: #718078; font-size: 13px; }
+        .crop-name { color: #176b35; font-weight: bold; }
+        .schedule-note {
+            margin-bottom: 24px;
+            background: #f7f9f7;
+            color: #657267;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        form { display: flex; flex-direction: column; gap: 10px; }
+        label { color: #35483a; font-size: 14px; font-weight: bold; }
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #cfdacf;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        input:focus {
+            outline: 2px solid #a7d6ae;
+            border-color: #267342;
+        }
+        button {
+            margin-top: 8px;
+            padding: 14px;
+            border: 0;
+            border-radius: 8px;
+            background: #267342;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover { background: #1b5b32; }
+        .message {
+            margin: 0 0 16px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            background: #fff0ef;
+            color: #9b1c1c;
+            font-size: 14px;
+        }
+        @media (max-width: 520px) {
+            body { padding: 16px; }
+            main { padding: 25px 21px; }
+            h1 { font-size: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="top-line">
+            <a class="back-link" href="{{ url_for('farmer_dashboard') }}">← Back to dashboard</a>
+            <span class="step-label">New request</span>
+        </div>
+
+        <h1>Apply for Procurement</h1>
+        <p class="intro">Submit the quantity of your crop and the date you prefer for procurement.</p>
+
+        <div class="crop-box">
+            <span class="crop-label">Your crop</span>
+            <span class="crop-name">{{ crop }}</span>
+        </div>
+
+        <div class="schedule-note">
+            Your selected date is a request. The procurement centre will review it and confirm the final date and token.
+        </div>
+
+        {% if message %}<p class="message">{{ message }}</p>{% endif %}
+
+        <form action="{{ url_for('apply_procurement') }}" method="post">
+            <label for="quantity">Quantity (quintals)</label>
+            <input id="quantity" name="quantity" type="number" min="0.1" step="0.1" placeholder="For example, 5" required>
+            <label for="procurement_date">Preferred procurement date</label>
+            <input id="procurement_date" name="procurement_date" type="date" value="{{ requested_date or '' }}" required>
+            <button type="submit">Submit procurement request</button>
+        </form>
+    </main>
+</body>
+</html>
