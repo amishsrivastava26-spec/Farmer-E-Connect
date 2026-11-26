@@ -29,3 +29,7 @@ A beginner-friendly Flask project for farmers and procurement centre admins to t
 5. Open **http://127.0.0.1:5001** in your browser. The database tables are initialized when the app starts.
 
 Admins can register or log in from the admin links on the site. Farmers can register and log in from the home page.
+
+##Project Documentation:-
+[text](../../Attachments/Documents/Farmer_E_Connect_Project_Design_Documentation_Editable.docx)
+
