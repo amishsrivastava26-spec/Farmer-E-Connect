@@ -30,6 +30,5 @@ A beginner-friendly Flask project for farmers and procurement centre admins to t
 
 Admins can register or log in from the admin links on the site. Farmers can register and log in from the home page.
 
-##Project Documentation:-
-[text](../../Attachments/Documents/Farmer_E_Connect_Project_Design_Documentation_Editable.docx)
+
 
